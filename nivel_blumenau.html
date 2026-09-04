@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monitor do Rio Itajaí-Açu | Blumenau</title>
+<meta name="description" content="Monitoramento em tempo real do nível do Rio Itajaí-Açu em Blumenau, SC. Dados oficiais da Defesa Civil.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#2563eb;--success:#16a34a;--warning:#ca8a04;--danger:#dc2626;--bg:#f8fafc;--card-bg:#fff;--text:#1e293b;--text-light:#64748b}html,body{overflow:hidden;overscroll-behavior:none;max-width:100%;}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',sans-serif;background-color:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}.container{background:var(--card-bg);width:100%;max-width:480px;border-radius:24px;box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 10px 10px -5px rgba(0,0,0,.04);overflow:hidden;text-align:center;position:relative}.header{background:linear-gradient(135deg,#1e40af 0%,#3b82f6 100%);color:#fff;padding:30px 20px}.header h1{font-size:1.5rem;font-weight:800;margin-bottom:5px}.header p{opacity:.9;font-size:.9rem}.content{padding:30px 20px}.level-display{margin:20px 0;position:relative}.level-value{font-size:5rem;font-weight:800;line-height:1;color:var(--text);letter-spacing:-2px}.level-unit{font-size:1.5rem;color:var(--text-light);font-weight:600;vertical-align:super}.status-badge{display:flex;width:max-content;margin:10px auto 0;align-items:center;justify-content:center;gap:8px;padding:8px 16px;border-radius:50px;font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;margin-top:10px}.status-normal{background:#dcfce7;color:var(--success)}.status-alerta{background:#fef9c3;color:var(--warning)}.status-critico{background:#fee2e2;color:var(--danger);animation:pulse-red 2s infinite}.details{margin-top:25px;padding-top:20px;border-top:1px solid #e2e8f0;font-size:.85rem;color:var(--text-light)}.loading-spinner{width:40px;height:40px;border:4px solid #e2e8f0;border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite;margin:40px auto}.error-box{background:#fef2f2;color:var(--danger);padding:20px;border-radius:12px;margin:20px 0;font-size:.9rem}.btn-retry{background:var(--primary);color:#fff;border:none;padding:12px 24px;border-radius:8px;font-weight:600;cursor:pointer;margin-top:15px;transition:transform .1s}.btn-retry:active{transform:scale(.98)}footer{margin-top:30px;font-size:.75rem;color:#94a3b8;text-align:center}@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse-red{0%{box-shadow:0 0 0 0 rgba(220,38,38,.4)}70%{box-shadow:0 0 0 10px rgba(220,38,38,0)}100%{box-shadow:0 0 0 0 rgba(220,38,38,0)}}@media (prefers-color-scheme:dark){:root{--bg:#0f172a;--card-bg:#1e293b;--text:#f1f5f9;--text-light:#94a3b8}.level-value{color:#f1f5f9}.details{border-color:#334155}.status-normal{background:#14532d;color:#86efac}.status-alerta{background:#713f12;color:#fde047}.status-critico{background:#7f1d1d;color:#fca5a5}}
+
+.trend-indicator{display:flex;width:max-content;margin-left:auto;margin-right:auto;align-items:center;gap:6px;padding:8px 16px;border-radius:50px;font-weight:700;font-size:.85rem;margin:15px auto 10px;transition:all .3s ease}.trend-up{background:#fee2e2;color:#dc2626;border:1px solid #fecaca}.trend-down{background:#dcfce7;color:#16a34a;border:1px solid #bbf7d0}.trend-stable{background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0}.trend-indicator span{font-size:1.2rem;font-weight:800}
+@media (prefers-color-scheme:dark){.trend-up{background:#7f1d1d;color:#fca5a5;border-color:#991b1b}.trend-down{background:#14532d;color:#86efac;border-color:#166534}.trend-stable{background:#334155;color:#94a3b8;border-color:#475569}}
+.status-badge{display:flex !important; width:max-content !important; margin-left:auto !important; margin-right:auto !important; justify-content:center !important;}
+</style></head><body><div class="container"><div class="header"><h1>Rio Itajaí-Açu</h1><p>Blumenau, Santa Catarina</p></div><div class="content" id="main-content"><div class="loading-spinner"></div><p style="color:var(--text-light);margin-top:15px">Conectando aos sensores...</p></div></div><footer></footer>
+<script>
+const TARGET_URL='https://defesacivil.blumenau.sc.gov.br/static/data/nivel_oficial.json';
+const SOURCES=[
+ {name:'Direto',url:TARGET_URL},
+ {name:'CorsProxy.io',url:`https://corsproxy.io/?${encodeURIComponent(TARGET_URL)}`},
+ {name:'Jina Reader',url:`https://r.jina.ai/${TARGET_URL}`}
+];
+const contentDiv=document.getElementById('main-content');
+function num(v){const n=parseFloat(String(v??'').replace(',','.'));return Number.isFinite(n)?n:null}
+async function tryFetchData(){
+ contentDiv.innerHTML='<div class="loading-spinner"></div><p style="color:var(--text-light);margin-top:15px">Buscando dados...</p>';
+ for(const source of SOURCES){
+  try{
+   const cacheBuster=`${source.url.includes('?')?'&':'?'}t=${Date.now()}`;
+   const controller=new AbortController(); const timeoutId=setTimeout(()=>controller.abort(),8000);
+   const response=await fetch(source.url+cacheBuster,{signal:controller.signal,cache:'no-store'}); clearTimeout(timeoutId);
+   if(!response.ok) throw new Error(`HTTP ${response.status}`);
+   let data;
+   if(source.name==='Jina Reader'){
+    const text=await response.text(); const match=text.match(/\{[\s\S]*\}/); if(!match) throw new Error('Formato inválido do Jina'); data=JSON.parse(match[0]);
+   }else data=await response.json();
+   if(!data||!Array.isArray(data.niveis)||!data.niveis.length) throw new Error('Dados vazios ou formato inesperado');
+   renderData(data); return;
+  }catch(err){console.warn(`Falha na fonte ${source.name}:`,err.message)}
+ }
+ showError();
+}
+function renderData(data){
+ const valid=data.niveis.filter(x=>x&&x.horaLeitura&&!isNaN(new Date(x.horaLeitura).getTime())&&num(x.nivel)!==null);
+ if(!valid.length){showError();return}
+ valid.sort((a,b)=>new Date(a.horaLeitura)-new Date(b.horaLeitura));
+ const atual=valid[valid.length-1];
+ const anterior=valid.length>=2?valid[valid.length-2]:null;
+ const nivelAtual=num(atual.nivel); const dataHoraAtual=new Date(atual.horaLeitura);
+ let variacao=0,tendenciaHTML='';
+ if(anterior){
+  const nivelAnterior=num(anterior.nivel); if(nivelAnterior!==null){
+   variacao=nivelAtual-nivelAnterior;
+   if(variacao>0.01)tendenciaHTML='<div class="trend-indicator trend-up"><span>↑</span> Subindo '+variacao.toFixed(2)+'m/h</div>';
+   else if(variacao<-0.01)tendenciaHTML='<div class="trend-indicator trend-down"><span>↓</span> Descendo '+Math.abs(variacao).toFixed(2)+'m/h</div>';
+   else tendenciaHTML='<div class="trend-indicator trend-stable"><span>→</span> Estável</div>';
+  }
+ }
+ let statusClass='status-normal',statusText='Nível Normal';
+ const condLower=String(data.condicao||'').toLowerCase();
+ if(condLower.includes('máximo')||condLower.includes('maximo')){statusClass='status-critico';statusText='ALERTA MÁXIMO'}
+ else if(condLower.includes('alerta')){statusClass='status-alerta';statusText='Em Alerta'}
+ else if(condLower.includes('atenção')||condLower.includes('atencao')){statusClass='status-alerta';statusText='Atenção'}
+ else if(condLower.includes('observação')||condLower.includes('observacao')){statusClass='status-alerta';statusText='Observação'}
+ else if(nivelAtual>=8){statusClass='status-critico';statusText='ALERTA MÁXIMO'}
+ else if(nivelAtual>=6){statusClass='status-alerta';statusText='Alerta'}
+ else if(nivelAtual>=4){statusClass='status-alerta';statusText='Atenção'}
+ else if(nivelAtual>=3){statusClass='status-alerta';statusText='Observação'}
+ const formattedDate=dataHoraAtual.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+ contentDiv.innerHTML=`<div class="level-display"><span class="level-value">${nivelAtual.toFixed(2)}</span><span class="level-unit">m</span></div>${tendenciaHTML}<div class="status-badge ${statusClass}">${statusText}</div><div class="details"><p><strong>Última leitura:</strong> ${formattedDate}</p>${anterior?`<p style="margin-top:8px"><strong>Variação (1h):</strong> ${variacao>0?'+':''}${variacao.toFixed(2)}m</p>`:''}</div>`;
+}
+function showError(){contentDiv.innerHTML='<div class="error-box"><p><strong>Não foi possível obter os dados.</strong></p><p style="font-size:.8rem;margin-top:5px;opacity:.8">O servidor da Defesa Civil pode estar indisponível ou bloqueando acessos externos no momento.</p></div><button class="btn-retry" onclick="tryFetchData()">Tentar Novamente</button>'}
+tryFetchData(); setInterval(tryFetchData,120000);
+</script>
+</body></html>
