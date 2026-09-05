@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071525">
+<meta name="description" content="Painel público de monitoramento de chuva do Alto e Médio Vale do Itajaí.">
+<title>Monitoramento | Vale do Itajaí</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="top-glow"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true"><span>≈</span></div>
+      <div>
+        <div class="eyebrow">MONITORAMENTO HIDROMETEOROLÓGICO</div>
+        <h1>Vale do Itajaí</h1>
+        <p>Chuva em tempo real · Alto + Médio Vale</p>
+      </div>
+    </div>
+    <button id="refresh" class="refresh-btn" type="button"><span class="refresh-icon">↻</span> Atualizar</button>
+  </div>
+</header>
+
+<main class="page-shell">
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="live-badge"><span class="live-dot"></span> DADOS AO VIVO</div>
+      <h2>Monitoramento da chuva</h2>
+      <p>Acompanhe os acumulados médios das estações selecionadas nos municípios do Alto e Médio Vale do Itajaí.</p>
+    </div>
+    <div class="hero-watermark" aria-hidden="true">VALE<br><strong>ITAJAÍ</strong></div>
+  </section>
+
+  <section id="status" class="status" aria-live="polite">Conectando ao WebSocket oficial…</section>
+
+  <section class="kpi-grid" aria-label="Resumo da rede">
+    <article class="kpi-card"><div class="kpi-icon">◉</div><div><strong id="received">0</strong><span>estações recebidas</span></div></article>
+    <article class="kpi-card"><div class="kpi-icon rain-icon">☁</div><div><strong id="rainCount">0</strong><span>com dados de chuva</span></div></article>
+    <article class="kpi-card"><div class="kpi-icon selected-icon">✓</div><div><strong id="selectedCount">0</strong><span>estações monitoradas</span></div></article>
+  </section>
+
+  <section class="panel-section">
+    <article id="rainNowCard" class="rain-now-card rain-now-none" aria-live="polite">
+      <div class="rain-now-visual" aria-hidden="true">
+        <div class="rain-cloud"><span></span><span></span><span></span><span></span><i></i></div>
+      </div>
+      <div class="rain-now-content">
+        <div class="rain-now-kicker">CHUVA AGORA · MÉDIA DA REDE</div>
+        <div id="rainNowLabel" class="rain-now-label">SEM CHUVA REGISTRADA NO MOMENTO</div>
+        <strong id="rainNowValue">0,0 <em>mm/h</em></strong>
+        <p id="rainNowMeta">Média dos últimos 5 minutos · aguardando as 57 estações</p>
+      </div>
+      <div id="rainNowStatus" class="rain-now-status">SEM CHUVA</div>
+    </article>
+    <div class="section-title-row">
+      <div>
+        <div class="section-kicker">VISÃO REGIONAL</div>
+        <h2>Chuva média <span>— Alto + Médio Vale</span></h2>
+      </div>
+      <div class="source-badge">Defesa Civil SC</div>
+    </div>
+    <p id="selectionInfo" class="section-note">Aguardando dados. A conexão usa o WebSocket oficial, sem proxy.</p>
+    <div id="rainCards" class="grid rain-grid"></div>
+    <div class="method-note"><span>i</span><div><strong>Acumulados oficiais</strong><br>Os períodos exibidos são obtidos diretamente da rede estadual de monitoramento.</div></div>
+    <article id="rainForecastCard" class="rain-forecast-card" aria-live="polite">
+      <div class="rain-forecast-head">
+        <div>
+          <div class="rain-forecast-kicker">PREVISÃO · BACIA DO ITAJAÍ-AÇU</div>
+          <h3>Previsão de chuva acumulada</h3>
+          <p>ECMWF IFS · média espacial de toda a bacia entre o Alto Vale e Blumenau</p>
+        </div>
+        <span id="rainForecastStatus" class="rain-forecast-status">CONSULTANDO</span>
+      </div>
+      <div class="rain-forecast-grid rain-forecast-periods">
+        <div class="rain-forecast-total"><small>MÉDIA · PRÓXIMAS 12 HORAS</small><strong id="rainForecast12">—</strong><span>mm acumulados</span></div>
+        <div class="rain-forecast-total"><small>MÉDIA · PRÓXIMAS 24 HORAS</small><strong id="rainForecast24">—</strong><span>mm acumulados</span></div>
+        <div class="rain-forecast-total"><small>MÉDIA · PRÓXIMAS 48 HORAS</small><strong id="rainForecast48">—</strong><span>mm acumulados</span></div>
+        <div class="rain-forecast-total"><small>MÉDIA · PRÓXIMAS 72 HORAS</small><strong id="rainForecast72">—</strong><span>mm acumulados</span></div>
+        <div class="rain-forecast-total"><small>MÉDIA · PRÓXIMOS 7 DIAS</small><strong id="rainForecast7d">—</strong><span>mm acumulados</span></div>
+      </div>
+      <div id="rainForecastMeta" class="rain-forecast-meta">Aguardando a previsão ECMWF.</div>
+    </article>
+  </section>
+
+  <section class="panel-section river-monitor-section">
+    <div class="section-title-row">
+      <div>
+        <div class="section-kicker">NÍVEL DO RIO</div>
+        <h2>Monitor do Rio Itajaí-Açu <span>— Blumenau</span></h2>
+      </div>
+      <div class="network-pill"><span></span> Monitor ativo</div>
+    </div>
+    <div class="river-frame-wrap">
+      <iframe class="river-frame blumenau-frame" src="nivel_blumenau.html" title="Monitor do Rio Itajaí-Açu em Blumenau" loading="eager" scrolling="no"></iframe>
+    </div>
+  </section>
+
+  <section class="panel-section river-monitor-section">
+    <div class="section-title-row">
+      <div>
+        <div class="section-kicker">NÍVEL DO RIO</div>
+        <h2>Monitor do Rio Itajaí-Açu <span>— Rio do Sul</span></h2>
+      </div>
+      <div class="network-pill"><span></span> Monitor ativo</div>
+    </div>
+    <div class="river-frame-wrap">
+      <iframe class="river-frame" src="nivel_riodosul.html" title="Monitor do Rio Itajaí-Açu em Rio do Sul" loading="eager" scrolling="no"></iframe>
+    </div>
+  </section>
+
+  <section class="panel-section dams-section">
+    <div class="section-title-row">
+      <div>
+        <div class="section-kicker">BARRAGENS DO ALTO VALE</div>
+        <h2>Nível das barragens <span>— Ituporanga + Taió</span></h2>
+      </div>
+      <div class="network-pill"><span></span> Defesa Civil SC</div>
+    </div>
+    <p class="section-note">Níveis, capacidade e situação das comportas, obtidos diretamente da rede oficial da Defesa Civil SC. Atualização automática a cada 5 minutos.</p>
+    <div id="damCards" class="dam-cards"></div>
+  </section>
+
+  <section class="panel-section stations-section">
+    <div class="section-title-row">
+      <div>
+        <div class="section-kicker">REDE DE ESTAÇÕES</div>
+        <h2>Estações de chuva</h2>
+      </div>
+      <div class="network-pill"><span></span> Rede conectada</div>
+    </div>
+    <p class="section-note">Rede fixa de monitoramento: 42 municípios — 28 do Alto Vale (AMAVI) e 14 do Médio Vale (AMVE). Todas as estações elegíveis entram automaticamente no cálculo regional.</p>
+    <div id="stations" class="stations"></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div><strong>Monitoramento do Vale do Itajaí</strong><span>Fonte: Rede Integrada de Monitoramento da Secretaria da Proteção e Defesa Civil de Santa Catarina.</span></div>
+    <div class="footer-tech">WebSocket oficial · sem proxy</div>
+  </div>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
