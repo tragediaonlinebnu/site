@@ -1,6 +1,6 @@
 {
-  "version": 7,
-  "updated_at": null,
+  "version": 8,
+  "updated_at": "2026-09-06T22:10:09.349849+00:00",
   "evaluated": 0,
   "mae_m": {
     "6": null,
@@ -32,5 +32,36 @@
     "12": 0.55,
     "24": 0.4
   },
-  "rain_quality": {}
+  "rain_quality": {
+    "h003": {
+      "stations": 48,
+      "cities": 35,
+      "value": 0.00020833332867672047
+    },
+    "h006": {
+      "stations": 48,
+      "cities": 35,
+      "value": 0.0016666666294137638
+    },
+    "h012": {
+      "stations": 48,
+      "cities": 35,
+      "value": 0.0154166667877386
+    },
+    "h024": {
+      "stations": 48,
+      "cities": 35,
+      "value": 0.2668750007869676
+    },
+    "h048": {
+      "stations": 48,
+      "cities": 35,
+      "value": 5.918958351636927
+    },
+    "h096": {
+      "stations": 48,
+      "cities": 35,
+      "value": 7.583541649704178
+    }
+  }
 }
