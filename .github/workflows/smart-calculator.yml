@@ -2,7 +2,6 @@ name: Aprendizado da calculadora do rio
 
 on:
   workflow_dispatch:
-
   schedule:
     - cron: "*/15 * * * *"
 
@@ -23,7 +22,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Preparar Python
+      - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -33,51 +32,102 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install requests websockets
 
-      - name: Coletar dados e aprender
+      - name: Executar coleta e aprendizado
         run: |
           python scripts/collect_and_learn.py
 
-      - name: Validar dados persistidos
+      - name: Validar arquivos JSON
         run: |
-          python - <<'PYCODE'
+          python - <<'PY'
           import json
           from pathlib import Path
 
           files = [
               "data/learning.json",
-              "data/learning_status.json",
               "data/learning_snapshots.json",
+              "data/learning_status.json",
               "data/river_history.json",
               "data/dam_history.json",
           ]
 
-          for name in files:
-              path = Path(name)
+          for filename in files:
+              path = Path(filename)
 
               if not path.exists():
-                  raise SystemExit(f"Arquivo ausente: {name}")
+                  raise SystemExit(f"Arquivo ausente: {filename}")
 
-              with path.open(encoding="utf-8") as f:
+              with path.open("r", encoding="utf-8") as f:
                   json.load(f)
 
-              print(f"OK: {name}")
-          PYCODE
+              print(f"OK: {filename}")
 
-      - name: Gravar aprendizado no GitHub
+          print("Todos os JSONs são válidos.")
+          PY
+
+      - name: Validar chuva observada
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("data/learning_snapshots.json")
+
+          with path.open("r", encoding="utf-8") as f:
+              snapshots = json.load(f)
+
+          if snapshots:
+              rain = snapshots[-1].get("rain") or {}
+
+              required = (
+                  "h003",
+                  "h006",
+                  "h012",
+                  "h024",
+                  "h048",
+                  "h096",
+              )
+
+              for key in required:
+                  value = rain.get(key)
+
+                  if not isinstance(value, (int, float)):
+                      raise SystemExit(
+                          f"ERRO: chuva observada inválida em {key}: {value!r}"
+                      )
+
+              print("OK: último snapshot contém chuva observada válida.")
+              print({
+                  key: rain[key]
+                  for key in required
+              })
+
+          else:
+              print("OK: nenhum snapshot novo.")
+          PY
+
+      - name: Mostrar alterações
+        run: |
+          git status --short
+
+      - name: Salvar aprendizado
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add \
             data/learning.json \
-            data/learning_status.json \
             data/learning_snapshots.json \
+            data/learning_status.json \
             data/river_history.json \
             data/dam_history.json
 
           if git diff --cached --quiet; then
             echo "Nenhuma alteração para salvar."
-          else
-            git commit -m "Atualizar aprendizado da calculadora"
-            git push
+            exit 0
           fi
+
+          git commit -m "Atualiza aprendizado da calculadora"
+
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+
+          git push origin "HEAD:${GITHUB_REF_NAME}"
