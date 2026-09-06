@@ -96,11 +96,7 @@ jobs:
                       )
 
               print("OK: último snapshot contém chuva observada válida.")
-              print({
-                  key: rain[key]
-                  for key in required
-              })
-
+              print({key: rain[key] for key in required})
           else:
               print("OK: nenhum snapshot novo.")
           PY
