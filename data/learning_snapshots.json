@@ -202,5 +202,56 @@
         "dam": 0.10560000000000001
       }
     }
+  },
+  {
+    "t": 1788721272293,
+    "current": 3.25,
+    "rain": {
+      "h003": null,
+      "h006": null,
+      "h012": null,
+      "h024": null,
+      "h048": null,
+      "h096": null
+    },
+    "future_rain": {
+      "6": 0.0,
+      "12": 0.0,
+      "24": 0.0
+    },
+    "dams": {
+      "open_fraction": 0.6,
+      "spill_active": 0,
+      "open": 12,
+      "total": 20,
+      "event_opening": 0,
+      "recent_event_signal": 0
+    },
+    "slope": 0.005999999999999961,
+    "pred": {
+      "6": 3.3082,
+      "12": 3.3556,
+      "24": 3.4132
+    },
+    "components": {
+      "6": {
+        "trend": 0.025199999999999837,
+        "observed_rain": 0.0,
+        "forecast_rain": 0.0,
+        "dam": 0.033
+      },
+      "12": {
+        "trend": 0.039599999999999747,
+        "observed_rain": 0.0,
+        "forecast_rain": 0.0,
+        "dam": 0.066
+      },
+      "24": {
+        "trend": 0.05759999999999963,
+        "observed_rain": 0.0,
+        "forecast_rain": 0.0,
+        "dam": 0.10560000000000001
+      }
+    }
   }
 ]
