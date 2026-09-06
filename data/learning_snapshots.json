@@ -314,5 +314,84 @@
         "dam": 0.0
       }
     }
+  },
+  {
+    "t": 1788738531206,
+    "current": 3.22,
+    "rain": {
+      "h003": 0.0,
+      "h006": 0.0008571428379842214,
+      "h012": 0.0065238095376463166,
+      "h024": 0.037380952875883805,
+      "h048": 5.687928561795326,
+      "h096": 7.386666632692019
+    },
+    "rain_quality": {
+      "h003": {
+        "stations": 48,
+        "cities": 35,
+        "value": 0.0
+      },
+      "h006": {
+        "stations": 48,
+        "cities": 35,
+        "value": 0.0008571428379842214
+      },
+      "h012": {
+        "stations": 48,
+        "cities": 35,
+        "value": 0.0065238095376463166
+      },
+      "h024": {
+        "stations": 48,
+        "cities": 35,
+        "value": 0.037380952875883805
+      },
+      "h048": {
+        "stations": 48,
+        "cities": 35,
+        "value": 5.687928561795326
+      },
+      "h096": {
+        "stations": 48,
+        "cities": 35,
+        "value": 7.386666632692019
+      }
+    },
+    "future_rain": {},
+    "dams": {
+      "open_fraction": 0.6,
+      "spill_active": 0,
+      "open": 12,
+      "total": 20,
+      "event_opening": 0,
+      "recent_event_signal": 0
+    },
+    "slope": 0.0,
+    "pred": {
+      "6": 3.22,
+      "12": 3.22,
+      "24": 3.2202
+    },
+    "components": {
+      "6": {
+        "trend": 0.0,
+        "observed_rain": 1.890593364335351e-06,
+        "forecast_rain": 0.0,
+        "dam": 0.0
+      },
+      "12": {
+        "trend": 0.0,
+        "observed_rain": 2.3048252769004922e-05,
+        "forecast_rain": 0.0,
+        "dam": 0.0
+      },
+      "24": {
+        "trend": 0.0,
+        "observed_rain": 0.00017979310106460702,
+        "forecast_rain": 0.0,
+        "dam": 0.0
+      }
+    }
   }
 ]
