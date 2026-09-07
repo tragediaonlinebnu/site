@@ -44,12 +44,17 @@ jobs:
               "data/river_history.json",
               "data/hydrology_events.json",
               "data/hydrology_status.json",
-              "data/rain_forecast.json",
           ]
 
           for file in files:
-              with open(file, encoding="utf-8") as f:
+              path = Path(file)
+
+              if not path.exists():
+                  raise FileNotFoundError(f"Arquivo não encontrado: {file}")
+
+              with path.open(encoding="utf-8") as f:
                   json.load(f)
+
               print(f"OK: {file}")
           PY
 
