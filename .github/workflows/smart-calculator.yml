@@ -1,129 +1,68 @@
-name: Aprendizado da calculadora do rio
+name: Smart Hydrology Collector
 
 on:
-  workflow_dispatch:
   schedule:
     - cron: "*/15 * * * *"
+  workflow_dispatch:
 
 permissions:
   contents: write
 
-concurrency:
-  group: smart-calculator-learning
-  cancel-in-progress: false
-
 jobs:
-  learn:
+  collect-and-learn:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Baixar repositório
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Configurar Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
 
-      - name: Instalar dependências
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install requests websockets
+          pip install requests websockets
 
-      - name: Executar coleta e aprendizado
+      - name: Collect data and learn
         run: |
           python scripts/collect_and_learn.py
 
-      - name: Validar arquivos JSON
+      - name: Validate JSON
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
 
           files = [
+              "data/dam_history.json",
               "data/learning.json",
               "data/learning_snapshots.json",
               "data/learning_status.json",
               "data/river_history.json",
-              "data/dam_history.json",
+              "data/hydrology_events.json",
+              "data/hydrology_status.json",
+              "data/rain_forecast.json",
           ]
 
-          for filename in files:
-              path = Path(filename)
-
-              if not path.exists():
-                  raise SystemExit(f"Arquivo ausente: {filename}")
-
-              with path.open("r", encoding="utf-8") as f:
+          for file in files:
+              with open(file, encoding="utf-8") as f:
                   json.load(f)
-
-              print(f"OK: {filename}")
-
-          print("Todos os JSONs são válidos.")
+              print(f"OK: {file}")
           PY
 
-      - name: Validar chuva observada
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-
-          path = Path("data/learning_snapshots.json")
-
-          with path.open("r", encoding="utf-8") as f:
-              snapshots = json.load(f)
-
-          if snapshots:
-              rain = snapshots[-1].get("rain") or {}
-
-              required = (
-                  "h003",
-                  "h006",
-                  "h012",
-                  "h024",
-                  "h048",
-                  "h096",
-              )
-
-              for key in required:
-                  value = rain.get(key)
-
-                  if not isinstance(value, (int, float)):
-                      raise SystemExit(
-                          f"ERRO: chuva observada inválida em {key}: {value!r}"
-                      )
-
-              print("OK: último snapshot contém chuva observada válida.")
-              print({key: rain[key] for key in required})
-          else:
-              print("OK: nenhum snapshot novo.")
-          PY
-
-      - name: Mostrar alterações
-        run: |
-          git status --short
-
-      - name: Salvar aprendizado
+      - name: Commit updated data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add \
-            data/learning.json \
-            data/learning_snapshots.json \
-            data/learning_status.json \
-            data/river_history.json \
-            data/dam_history.json
+          git add data/*.json
 
           if git diff --cached --quiet; then
-            echo "Nenhuma alteração para salvar."
-            exit 0
+            echo "Nenhuma alteração para commit."
+          else
+            git commit -m "chore: atualização hidrológica automática"
+            git push
           fi
-
-          git commit -m "Atualiza aprendizado da calculadora"
-
-          git pull --rebase origin "${GITHUB_REF_NAME}"
-
-          git push origin "HEAD:${GITHUB_REF_NAME}"
