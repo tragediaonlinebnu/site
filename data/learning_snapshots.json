@@ -1943,7 +1943,10 @@
     },
     "actual_6": 3.09,
     "error_6": 0.056400000000000006,
-    "resolved_6": "2026-09-07T11:07:20.830894+00:00"
+    "resolved_6": "2026-09-07T11:07:20.830894+00:00",
+    "actual_12": 3.09,
+    "error_12": 0.037200000000000344,
+    "resolved_12": "2026-09-07T17:06:22.693575+00:00"
   },
   {
     "t": 1788756775104,
@@ -3818,7 +3821,10 @@
     "resolved_2": "2026-09-07T13:08:48.674807+00:00",
     "actual_4": 3.03,
     "error_4": 0.04630000000000001,
-    "resolved_4": "2026-09-07T15:07:17.660793+00:00"
+    "resolved_4": "2026-09-07T15:07:17.660793+00:00",
+    "actual_6": 3.09,
+    "error_6": -0.028699999999999726,
+    "resolved_6": "2026-09-07T17:06:22.693716+00:00"
   },
   {
     "t": 1788778319717,
@@ -4967,7 +4973,10 @@
         "forecast_rain": 0.0,
         "dam": 0.0
       }
-    }
+    },
+    "actual_2": 3.09,
+    "error_2": -0.10219999999999985,
+    "resolved_2": "2026-09-07T17:06:22.693751+00:00"
   },
   {
     "t": 1788792793335,
@@ -5363,6 +5372,114 @@
       "24": {
         "trend": -0.1343999999999997,
         "observed_rain": 0.00018877142778996912,
+        "forecast_rain": 0.0,
+        "dam": 0.0,
+        "historical_analog": 0.0,
+        "analog_confidence": 0.0,
+        "analog_meta": null
+      }
+    }
+  },
+  {
+    "t": 1788800782688,
+    "current": 3.09,
+    "rain": {
+      "h003": 0.005285714220787797,
+      "h006": 0.01142857146582433,
+      "h012": 0.027357142564973663,
+      "h024": 0.032428571395576,
+      "h048": 0.6198809528146827,
+      "h096": 7.362499962392306
+    },
+    "rain_quality": {
+      "h003": {
+        "stations": 48,
+        "cities": 35,
+        "value": 0.005285714220787797
+      },
+      "h006": {
+        "stations": 48,
+        "cities": 35,
+        "value": 0.01142857146582433
+      },
+      "h012": {
+        "stations": 48,
+        "cities": 35,
+        "value": 0.027357142564973663
+      },
+      "h024": {
+        "stations": 48,
+        "cities": 35,
+        "value": 0.032428571395576
+      },
+      "h048": {
+        "stations": 48,
+        "cities": 35,
+        "value": 0.6198809528146827
+      },
+      "h096": {
+        "stations": 48,
+        "cities": 35,
+        "value": 7.362499962392306
+      }
+    },
+    "future_rain": {},
+    "dams": {
+      "open_fraction": 0.35,
+      "spill_active": 0,
+      "open": 7,
+      "total": 20,
+      "event_opening": 0,
+      "recent_event_signal": 0
+    },
+    "slope": 0.005999999999999961,
+    "pred": {
+      "2": 3.1006,
+      "4": 3.1087,
+      "6": 3.1152,
+      "12": 3.1297,
+      "24": 3.1478
+    },
+    "components": {
+      "2": {
+        "trend": 0.010559379283079472,
+        "observed_rain": 1.6221428611981017e-05,
+        "forecast_rain": 0.0,
+        "dam": 0.0,
+        "historical_analog": 0.0,
+        "analog_confidence": 0.0,
+        "analog_meta": null
+      },
+      "4": {
+        "trend": 0.01872256688827188,
+        "observed_rain": 2.7035714353301695e-05,
+        "forecast_rain": 0.0,
+        "dam": 0.0,
+        "historical_analog": 0.0,
+        "analog_confidence": 0.0,
+        "analog_meta": null
+      },
+      "6": {
+        "trend": 0.025173101399564978,
+        "observed_rain": 3.7850000094622374e-05,
+        "forecast_rain": 0.0,
+        "dam": 0.0,
+        "historical_analog": 0.0,
+        "analog_confidence": 0.0,
+        "analog_meta": null
+      },
+      "12": {
+        "trend": 0.03961605011759974,
+        "observed_rain": 0.00011642321325672258,
+        "forecast_rain": 0.0,
+        "dam": 0.0,
+        "historical_analog": 0.0,
+        "analog_confidence": 0.0,
+        "analog_meta": null
+      },
+      "24": {
+        "trend": 0.05759999999999963,
+        "observed_rain": 0.00018759999943631034,
         "forecast_rain": 0.0,
         "dam": 0.0,
         "historical_analog": 0.0,
