@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "updated_at": "2026-09-07T16:53:30.482464+00:00",
+  "current_level_m": 3.02,
+  "slope_m_h": -0.013999999999999967,
+  "rain_observed_mm": {
+    "h003": 0.005571428446897439,
+    "h006": 0.012642857152968645,
+    "h012": 0.02707142855173775,
+    "h024": 0.03214285695659263,
+    "h048": 0.6217380959895396,
+    "h096": 7.363928539270446
+  },
+  "rain_forecast_mm": {
+    "6": 0.0,
+    "12": 0.0,
+    "24": 0.0
+  },
+  "events": {
+    "completed_events": 0,
+    "active_event": null,
+    "median_response_h": null,
+    "median_rise_per_100mm_48h": null,
+    "highest_peak_m": null,
+    "last_event_id": null
+  },
+  "event_active": null,
+  "predictions": {
+    "2": 2.9954,
+    "4": 2.9763,
+    "6": 2.9613,
+    "12": 2.9277,
+    "24": 2.8858
+  },
+  "prediction_components": {
+    "2": {
+      "trend": -0.024639881368737314,
+      "observed_rain": 1.7903571423542288e-05,
+      "forecast_rain": 0.0,
+      "dam": 0.0,
+      "historical_analog": 0.0,
+      "analog_confidence": 0.0,
+      "analog_meta": null
+    },
+    "4": {
+      "trend": -0.0436859894059679,
+      "observed_rain": 2.9839285705903814e-05,
+      "forecast_rain": 0.0,
+      "dam": 0.0,
+      "historical_analog": 0.0,
+      "analog_confidence": 0.0,
+      "analog_meta": null
+    },
+    "6": {
+      "trend": -0.05873847577844708,
+      "observed_rain": 4.177499998826534e-05,
+      "forecast_rain": 0.0,
+      "dam": 0.0,
+      "historical_analog": 0.0,
+      "analog_confidence": 0.0,
+      "analog_meta": null
+    },
+    "12": {
+      "trend": -0.09243518166959977,
+      "observed_rain": 0.00011722857130358793,
+      "forecast_rain": 0.0,
+      "dam": 0.0,
+      "historical_analog": 0.0,
+      "analog_confidence": 0.0,
+      "analog_meta": null
+    },
+    "24": {
+      "trend": -0.1343999999999997,
+      "observed_rain": 0.00018877142778996912,
+      "forecast_rain": 0.0,
+      "dam": 0.0,
+      "historical_analog": 0.0,
+      "analog_confidence": 0.0,
+      "analog_meta": null
+    }
+  },
+  "model": "hybrid trend + observed rainfall + ECMWF + dam signal + historical analogs"
+}
