@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "reference_delay_hours": 5.0,
+  "learned_delay_hours": 5.0,
+  "events": 0,
+  "sum_delay_hours": 0.0,
+  "mean_delay_hours": null,
+  "sum_initial_rise_rate_cm_h": 0.0,
+  "sum_max_rise_rate_cm_h": 0.0,
+  "mean_initial_rise_rate_cm_h": null,
+  "mean_max_rise_rate_cm_h": null,
+  "patterns": {},
+  "event_history": [],
+  "active": null,
+  "last_event": null,
+  "updated_at": null
+}
