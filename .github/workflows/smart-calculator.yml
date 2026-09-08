@@ -48,6 +48,8 @@ jobs:
               "data/learning_status.json",
               "data/river_history.json",
               "data/dam_history.json",
+              "data/rain_response.json",
+              "data/flood_events.json",
           ]
 
           for filename in files:
@@ -115,7 +117,9 @@ jobs:
             data/learning_snapshots.json \
             data/learning_status.json \
             data/river_history.json \
-            data/dam_history.json
+            data/dam_history.json \
+            data/rain_response.json \
+            data/flood_events.json
 
           if git diff --cached --quiet; then
             echo "Nenhuma alteração para salvar."
