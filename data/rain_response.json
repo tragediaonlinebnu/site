@@ -15,11 +15,11 @@
     "started_at": 1788990616558,
     "rain_started_at": 1788990616558,
     "rain_ended_at": null,
-    "last_rain_active_at": 1789041082494,
+    "last_rain_active_at": 1789042164072,
     "dry_gap_started_at": null,
     "baseline_level": 2.66,
-    "max_level": 3.34,
-    "last_observed_level": 3.34,
+    "max_level": 3.43,
+    "last_observed_level": 3.43,
     "max_rain_h003": 24.086904743739538,
     "max_rain_h006": 38.653619166782924,
     "max_rain_h012": 45.533166921706425,
@@ -376,7 +376,7 @@
           "h003": 30.15,
           "h006": 51.71,
           "h012": 57.23,
-          "h024": 57.49
+          "h024": 57.52
         },
         "Salete": {
           "h003": 27.6,
@@ -388,13 +388,13 @@
           "h003": 26.9,
           "h006": 32.4,
           "h012": 40.6,
-          "h024": 47.3
+          "h024": 48.1
         },
         "Taio": {
           "h003": 39.062,
           "h006": 54.925,
           "h012": 60.265,
-          "h024": 60.265
+          "h024": 60.315
         },
         "Trombudo Central": {
           "h003": 21.835,
@@ -480,7 +480,7 @@
           "h003": 23.052,
           "h006": 38.606,
           "h012": 44.071,
-          "h024": 44.652
+          "h024": 44.695
         },
         "medio": {
           "h003": 27.553,
@@ -491,13 +491,13 @@
       },
       "station_count": 50
     },
-    "rain_duration_hours": 14.018,
-    "last_meaningful_rise_at": 1789038429773,
+    "rain_duration_hours": 14.319,
+    "last_meaningful_rise_at": 1789042164072,
     "response_delay_hours": 9.30708,
-    "response_max_level": 3.34
+    "response_max_level": 3.43
   },
   "last_event": null,
-  "updated_at": "2026-09-10T11:51:22.495255+00:00",
+  "updated_at": "2026-09-10T12:09:24.072505+00:00",
   "awaiting_rain_reset": false,
   "last_rain_episode": null,
   "spatial_patterns": {},
