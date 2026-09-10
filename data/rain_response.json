@@ -15,19 +15,19 @@
     "started_at": 1788990616558,
     "rain_started_at": 1788990616558,
     "rain_ended_at": null,
-    "last_rain_active_at": 1789030531709,
+    "last_rain_active_at": 1789031270955,
     "dry_gap_started_at": null,
     "baseline_level": 2.66,
-    "max_level": 2.96,
-    "last_observed_level": 2.96,
+    "max_level": 3.12,
+    "last_observed_level": 3.12,
     "max_rain_h003": 24.086904743739538,
     "max_rain_h006": 38.653619166782924,
     "max_rain_h012": 45.533166921706425,
-    "max_rain_h024": 47.788071532476515,
+    "max_rain_h024": 47.804643067859466,
     "response_detected_at": 1789024122046,
     "response_level": 2.8,
     "initial_rise_rate_cm_h": 9.169999999999993,
-    "max_rise_rate_cm_h": 12.659999999999998,
+    "max_rise_rate_cm_h": 15.220000000000006,
     "response_checkpoints_cm": {
       "1": 16.0
     },
@@ -386,7 +386,7 @@
           "h003": 26.9,
           "h006": 32.4,
           "h012": 40.6,
-          "h024": 47.2
+          "h024": 47.3
         },
         "Taio": {
           "h003": 39.062,
@@ -434,7 +434,7 @@
           "h003": 32.46,
           "h006": 49.22,
           "h012": 59.83,
-          "h024": 73.42
+          "h024": 73.48
         },
         "Doutor Pedrinho": {
           "h003": 37.4,
@@ -456,9 +456,9 @@
         },
         "Rio dos Cedros": {
           "h003": 32.995,
-          "h006": 44.365,
+          "h006": 44.705,
           "h012": 53.575,
-          "h024": 61.375
+          "h024": 61.79
         },
         "Rodeio": {
           "h003": 21.0,
@@ -470,7 +470,7 @@
           "h003": 35.72,
           "h006": 47.337,
           "h012": 55.598,
-          "h024": 65.917
+          "h024": 65.922
         }
       },
       "regions": {
@@ -478,24 +478,24 @@
           "h003": 23.052,
           "h006": 38.606,
           "h012": 44.071,
-          "h024": 44.648
+          "h024": 44.652
         },
         "medio": {
           "h003": 27.553,
           "h006": 43.19,
           "h012": 50.318,
-          "h024": 56.86
+          "h024": 56.914
         }
       },
       "station_count": 50
     },
-    "rain_duration_hours": 11.088,
-    "last_meaningful_rise_at": 1789027664400,
+    "rain_duration_hours": 11.293,
+    "last_meaningful_rise_at": 1789031270955,
     "response_delay_hours": 9.30708,
-    "response_max_level": 2.96
+    "response_max_level": 3.12
   },
   "last_event": null,
-  "updated_at": "2026-09-10T08:55:31.709774+00:00",
+  "updated_at": "2026-09-10T09:07:50.955578+00:00",
   "awaiting_rain_reset": false,
   "last_rain_episode": null,
   "spatial_patterns": {},
