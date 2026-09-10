@@ -1,1 +1,40 @@
-[]
+[
+  {
+    "id": "flood-20260910T180842Z",
+    "status": "active",
+    "started_at": 1789063722940,
+    "threshold_crossed_at": 1789063722940,
+    "initial_level": 4.05,
+    "peak_level": 4.05,
+    "peak_at": 1789063722940,
+    "max_rise_rate_m_per_h": 0.10929999999999995,
+    "samples": [
+      {
+        "t": 1789063722940,
+        "level": 4.05,
+        "rain": {
+          "h003": 0.2569761879786494,
+          "h006": 0.4404047649131999,
+          "h012": 10.04671425883259,
+          "h024": 46.83314288003104,
+          "h048": 48.70940497262137,
+          "h096": 48.785905020577566
+        },
+        "slope_m_per_h": 0.1093
+      }
+    ],
+    "dam_events": [
+      {
+        "t": 1789063722940,
+        "dams": {
+          "open_fraction": 0.0,
+          "spill_active": 0,
+          "open": 0,
+          "total": 20,
+          "event_opening": 0,
+          "recent_event_signal": 0
+        }
+      }
+    ]
+  }
+]
