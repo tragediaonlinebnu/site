@@ -15,7 +15,7 @@
     "started_at": 1788990616558,
     "rain_started_at": 1788990616558,
     "rain_ended_at": null,
-    "last_rain_active_at": 1789040338180,
+    "last_rain_active_at": 1789041082494,
     "dry_gap_started_at": null,
     "baseline_level": 2.66,
     "max_level": 3.34,
@@ -334,7 +334,7 @@
           "h003": 20.0,
           "h006": 35.4,
           "h012": 37.4,
-          "h024": 37.4
+          "h024": 37.6
         },
         "Petrolandia": {
           "h003": 18.8,
@@ -376,7 +376,7 @@
           "h003": 30.15,
           "h006": 51.71,
           "h012": 57.23,
-          "h024": 57.39
+          "h024": 57.49
         },
         "Salete": {
           "h003": 27.6,
@@ -491,13 +491,13 @@
       },
       "station_count": 50
     },
-    "rain_duration_hours": 13.812,
+    "rain_duration_hours": 14.018,
     "last_meaningful_rise_at": 1789038429773,
     "response_delay_hours": 9.30708,
     "response_max_level": 3.34
   },
   "last_event": null,
-  "updated_at": "2026-09-10T11:38:58.181256+00:00",
+  "updated_at": "2026-09-10T11:51:22.495255+00:00",
   "awaiting_rain_reset": false,
   "last_rain_episode": null,
   "spatial_patterns": {},
