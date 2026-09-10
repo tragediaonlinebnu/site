@@ -18,8 +18,8 @@
     "last_rain_active_at": 1789046685836,
     "dry_gap_started_at": 1789047560981,
     "baseline_level": 2.66,
-    "max_level": 3.8,
-    "last_observed_level": 3.8,
+    "max_level": 3.92,
+    "last_observed_level": 3.92,
     "max_rain_h003": 24.086904743739538,
     "max_rain_h006": 38.653619166782924,
     "max_rain_h012": 45.533166921706425,
@@ -389,7 +389,7 @@
           "h003": 26.9,
           "h006": 32.4,
           "h012": 40.6,
-          "h024": 50.7
+          "h024": 51.0
         },
         "Taio": {
           "h003": 39.062,
@@ -473,7 +473,7 @@
           "h003": 35.72,
           "h006": 47.337,
           "h012": 55.598,
-          "h024": 72.36
+          "h024": 72.44
         }
       },
       "regions": {
@@ -493,12 +493,12 @@
       "station_count": 50
     },
     "rain_duration_hours": 15.575,
-    "last_meaningful_rise_at": 1789056441798,
+    "last_meaningful_rise_at": 1789060001156,
     "response_delay_hours": 9.30708,
-    "response_max_level": 3.8
+    "response_max_level": 3.92
   },
   "last_event": null,
-  "updated_at": "2026-09-10T16:51:35.987557+00:00",
+  "updated_at": "2026-09-10T17:06:41.157339+00:00",
   "awaiting_rain_reset": false,
   "last_rain_episode": null,
   "spatial_patterns": {},
