@@ -1,7 +1,7 @@
 [
   {
     "id": "flood-20260910T180842Z",
-    "status": "active",
+    "status": "closed",
     "started_at": 1789063722940,
     "threshold_crossed_at": 1789063722940,
     "initial_level": 4.05,
@@ -567,6 +567,19 @@
           "h096": 51.712309587569464
         },
         "slope_m_per_h": -0.0673
+      },
+      {
+        "t": 1789103199442,
+        "level": 3.84,
+        "rain": {
+          "h003": 2.264214305863494,
+          "h006": 3.6419047554334005,
+          "h012": 4.446833328973679,
+          "h024": 21.86023803438459,
+          "h048": 51.6297378494626,
+          "h096": 51.71816678274245
+        },
+        "slope_m_per_h": -0.0715
       }
     ],
     "dam_events": [
@@ -1042,7 +1055,21 @@
           "event_opening": 0,
           "recent_event_signal": 0
         }
+      },
+      {
+        "t": 1789103199442,
+        "dams": {
+          "open_fraction": 0.0,
+          "spill_active": 0,
+          "open": 0,
+          "total": 20,
+          "event_opening": 0,
+          "recent_event_signal": 0
+        }
       }
-    ]
+    ],
+    "ended_at": 1789103199442,
+    "duration_hours": 10.966,
+    "peak_rise_m": 0.21
   }
 ]
