@@ -1,0 +1,191 @@
+name: Aprendizado da calculadora do rio
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: smart-calculator-learning
+  cancel-in-progress: false
+
+jobs:
+  learn:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install requests websockets
+
+      - name: Executar coleta e aprendizado
+        run: |
+          python scripts/collect_and_learn.py
+
+      - name: Validar arquivos JSON
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          files = [
+              "data/learning.json",
+              "data/learning_snapshots.json",
+              "data/learning_status.json",
+              "data/river_history.json",
+              "data/dam_history.json",
+              "data/rain_response.json",
+              "data/flood_events.json",
+              "data/projection.json",
+          ]
+
+          for filename in files:
+              path = Path(filename)
+
+              if not path.exists():
+                  raise SystemExit(f"Arquivo ausente: {filename}")
+
+              with path.open("r", encoding="utf-8") as f:
+                  json.load(f)
+
+              print(f"OK: {filename}")
+
+          print("Todos os JSONs são válidos.")
+          PY
+
+      - name: Validar chuva observada
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("data/learning_snapshots.json")
+
+          with path.open("r", encoding="utf-8") as f:
+              snapshots = json.load(f)
+
+          if snapshots:
+              rain = snapshots[-1].get("rain") or {}
+
+              required = (
+                  "h003",
+                  "h006",
+                  "h012",
+                  "h024",
+                  "h048",
+                  "h096",
+              )
+
+              for key in required:
+                  value = rain.get(key)
+
+                  if not isinstance(value, (int, float)):
+                      raise SystemExit(
+                          f"ERRO: chuva observada inválida em {key}: {value!r}"
+                      )
+
+              print("OK: último snapshot contém chuva observada válida.")
+              print({key: rain[key] for key in required})
+          else:
+              print("OK: nenhum snapshot novo.")
+          PY
+
+      - name: Mostrar alterações
+        run: |
+          git status --short
+
+      - name: Validar projeção do backend
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("data/projection.json")
+
+          if not path.exists():
+              raise SystemExit("ERRO: data/projection.json não foi gerado.")
+
+          with path.open("r", encoding="utf-8") as f:
+              data = json.load(f)
+
+          pred = data.get("pred") or {}
+          required = ("2", "4", "6", "12", "24")
+
+          for key in required:
+              value = pred.get(key)
+              if not isinstance(value, (int, float)):
+                  raise SystemExit(
+                      f"ERRO: projeção inválida para +{key}h: {value!r}"
+                  )
+
+          if not isinstance(data.get("current"), (int, float)):
+              raise SystemExit(
+                  f"ERRO: nível atual inválido em projection.json: {data.get('current')!r}"
+              )
+
+          print("OK: projection.json contém nível atual e todas as projeções.")
+          print({f"+{key}h": pred[key] for key in required})
+          PY
+
+      - name: Salvar aprendizado com sincronização segura
+        run: |
+          set -e
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          BRANCH="${GITHUB_REF_NAME}"
+
+          # Sincroniza antes de criar o commit para reduzir conflitos
+          # entre execuções do workflow.
+          git fetch origin "$BRANCH"
+          git rebase --autostash "origin/$BRANCH"
+
+          git add \
+            data/learning.json \
+            data/learning_snapshots.json \
+            data/learning_status.json \
+            data/river_history.json \
+            data/dam_history.json \
+            data/rain_response.json \
+            data/flood_events.json \
+            data/projection.json
+
+          if git diff --cached --quiet; then
+            echo "Nenhuma alteração para salvar."
+            exit 0
+          fi
+
+          git commit -m "Atualiza aprendizado da calculadora"
+
+          # Tenta publicar. Se outra execução tiver atualizado o branch
+          # nesse intervalo, sincroniza novamente e tenta mais duas vezes.
+          for attempt in 1 2 3; do
+            if git push origin "HEAD:$BRANCH"; then
+              echo "Push realizado com sucesso."
+              exit 0
+            fi
+
+            if [ "$attempt" -eq 3 ]; then
+              echo "ERRO: não foi possível realizar o push após 3 tentativas."
+              exit 1
+            fi
+
+            echo "Push falhou. Sincronizando novamente (tentativa $((attempt + 1))/3)..."
+            git fetch origin "$BRANCH"
+            git rebase --autostash "origin/$BRANCH"
+          done
