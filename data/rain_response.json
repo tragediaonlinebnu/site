@@ -556,7 +556,7 @@
     "baseline_level": 2.66,
     "pattern": "10_30mm_3h_long"
   },
-  "updated_at": "2026-09-14T21:00:25.914230+00:00",
+  "updated_at": "2026-09-14T21:15:05.371568+00:00",
   "awaiting_rain_reset": false,
   "last_rain_episode": {
     "started_at": 1788990616558,
@@ -885,5 +885,17 @@
     "cities": {}
   },
   "reference_cm_per_mm": 4.0,
-  "reference_rain_window_hours": 48
+  "reference_rain_window_hours": 48,
+  "reference_calibration": {
+    "min_rain_mm": 30.0,
+    "min_events_before_adjustment": 3,
+    "max_step_cm_per_mm": 0.2,
+    "min_cm_per_mm": 2.0,
+    "max_cm_per_mm": 6.0,
+    "observations": 0,
+    "sum_rain_mm": 0.0,
+    "sum_rise_cm": 0.0,
+    "estimated_cm_per_mm": 4.0,
+    "confidence": "prior"
+  }
 }
