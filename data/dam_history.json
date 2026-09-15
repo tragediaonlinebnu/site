@@ -23398,5 +23398,41 @@
       "event_opening": 0,
       "recent_event_signal": 0.03202740375227452
     }
+  },
+  {
+    "model_version": 8,
+    "t": 1789443216196,
+    "dams": {
+      "sul": {
+        "name": "sul",
+        "codigo": "DCSC-00038",
+        "timestamp": "2026-09-15T03:33:29.693+00:00",
+        "open_fraction": 0.5,
+        "open": 5,
+        "total_gates": 10,
+        "spill": 0,
+        "spill_active": 0,
+        "reservoir_percent": 15.519878387451172
+      },
+      "oeste": {
+        "name": "oeste",
+        "codigo": "DCSC-00040",
+        "timestamp": "2026-09-15T03:33:24.427+00:00",
+        "open_fraction": 0.7,
+        "open": 7,
+        "total_gates": 10,
+        "spill": 0,
+        "spill_active": 0,
+        "reservoir_percent": 61.20059585571289
+      }
+    },
+    "signal": {
+      "open_fraction": 0.6,
+      "spill_active": 0,
+      "open": 12,
+      "total": 20,
+      "event_opening": 0,
+      "recent_event_signal": 0.028820645736807315
+    }
   }
 ]
