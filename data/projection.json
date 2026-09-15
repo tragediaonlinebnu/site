@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-09-15T23:11:32.082000+00:00",
+  "generated_at": "2026-09-15T23:26:09.358000+00:00",
   "river_timestamp": "2026-09-15T23:00:00+00:00",
   "current": 3.45,
   "pred": {
@@ -13,7 +13,7 @@
   "components": {
     "2": {
       "trend": 0.018285378527706918,
-      "observed_rain": 1.5426017233555e-05,
+      "observed_rain": 1.3395535642517579e-05,
       "forecast_rain": 0.0,
       "dam": 0.0,
       "hydro": 0.0,
@@ -24,7 +24,7 @@
     },
     "4": {
       "trend": 0.03216571666683012,
-      "observed_rain": 2.6602250035827526e-05,
+      "observed_rain": 2.31006735653678e-05,
       "forecast_rain": 0.0,
       "dam": 0.0,
       "hydro": 0.0,
@@ -35,7 +35,7 @@
     },
     "6": {
       "trend": 0.042297540212047714,
-      "observed_rain": 4.0190950138922e-05,
+      "observed_rain": 3.4900732764739966e-05,
       "forecast_rain": 0.0,
       "dam": 0.0,
       "hydro": 0.0,
@@ -46,7 +46,7 @@
     },
     "12": {
       "trend": 0.05933040457683129,
-      "observed_rain": 0.00015435120993270325,
+      "observed_rain": 0.00015167535159152674,
       "forecast_rain": 0.0,
       "dam": 0.0,
       "hydro": 0.0,
@@ -57,7 +57,7 @@
     },
     "24": {
       "trend": 0.07094188643428828,
-      "observed_rain": 0.0005579065096675687,
+      "observed_rain": 0.0005460611488266122,
       "forecast_rain": 0.0,
       "dam": 0.0,
       "hydro": 0.0,
