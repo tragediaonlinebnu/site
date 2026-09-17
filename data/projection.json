@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-09-17T09:12:53.113000+00:00",
+  "generated_at": "2026-09-17T09:30:53.966000+00:00",
   "river_timestamp": "2026-09-16T23:00:00+00:00",
   "current": 3.1,
   "pred": {
@@ -57,7 +57,7 @@
     },
     "24": {
       "trend": 0.0,
-      "observed_rain": 0.0003444195450402199,
+      "observed_rain": 0.00034323732804908413,
       "forecast_rain": 0.0,
       "dam": 0.0,
       "hydro": 0.0,
