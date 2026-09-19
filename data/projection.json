@@ -1,19 +1,19 @@
 {
   "version": 1,
-  "generated_at": "2026-09-19T10:11:47.917000+00:00",
+  "generated_at": "2026-09-19T10:26:50.146000+00:00",
   "river_timestamp": "2026-09-19T10:00:00+00:00",
   "current": 2.55,
   "pred": {
-    "2": 2.5296,
-    "4": 2.5149,
-    "6": 2.5044,
-    "12": 2.4914,
-    "24": 2.4766
+    "2": 2.5299,
+    "4": 2.5155,
+    "6": 2.5052,
+    "12": 2.5011,
+    "24": 2.5148
   },
   "components": {
     "2": {
       "trend": -0.018105858711671873,
-      "observed_rain": 0.0018084513569635362,
+      "observed_rain": 0.002133269269967934,
       "forecast_rain": 0.0,
       "dam": 0.0,
       "hydro": 0.0,
@@ -24,7 +24,7 @@
     },
     "4": {
       "trend": -0.031830761895128325,
-      "observed_rain": 0.0031186841326047605,
+      "observed_rain": 0.003678834377935929,
       "forecast_rain": 0.0,
       "dam": 0.0,
       "hydro": 0.0,
@@ -35,7 +35,7 @@
     },
     "6": {
       "trend": -0.041830878093912414,
-      "observed_rain": 0.00471173973268258,
+      "observed_rain": 0.005558020425108588,
       "forecast_rain": 0.0,
       "dam": 0.0,
       "hydro": 0.0,
@@ -46,23 +46,23 @@
     },
     "12": {
       "trend": -0.058955186025858586,
-      "observed_rain": 0.01076957295981745,
+      "observed_rain": 0.01261549915128715,
       "forecast_rain": 0.0,
       "dam": 0.0,
-      "hydro": 0.0,
-      "hydro_reference_4cm_mm": 0.0,
-      "hydro_pattern": 0.0,
+      "hydro": 0.007812,
+      "hydro_reference_4cm_mm": 0.007812,
+      "hydro_pattern": 0.007812,
       "hydro_spatial": 0.0,
       "hydro_city": 0.0
     },
     "24": {
       "trend": -0.07183519195653379,
-      "observed_rain": 0.01855941243169315,
+      "observed_rain": 0.02170106947137423,
       "forecast_rain": 0.0,
       "dam": 0.0,
-      "hydro": 0.0,
-      "hydro_reference_4cm_mm": 0.0,
-      "hydro_pattern": 0.0,
+      "hydro": 0.035076,
+      "hydro_reference_4cm_mm": 0.035076,
+      "hydro_pattern": 0.035076,
       "hydro_spatial": 0.0,
       "hydro_city": 0.0
     }
