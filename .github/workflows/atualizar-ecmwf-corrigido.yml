@@ -1,0 +1,110 @@
+name: Atualizar previsão ECMWF
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 07Z e 19Z: margem de 7 horas após as rodadas ECMWF 00Z e 12Z.
+    # Brasília (UTC-3): 04:00 e 16:00.
+    - cron: "0 7 * * *"
+    - cron: "0 19 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ecmwf-forecast
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependência
+        run: python -m pip install requests
+
+      - name: Atualizar snapshot ECMWF
+        run: python scripts/update_ecmwf.py
+
+      - name: Validar snapshot ECMWF
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("data/ecmwf.json")
+          if not path.exists():
+              raise SystemExit("ERRO: data/ecmwf.json não existe.")
+
+          data = json.loads(path.read_text(encoding="utf-8"))
+          required = ("6", "12", "24", "48", "72", "192", "360")
+          totals = data.get("totals") or {}
+
+          for key in required:
+              value = totals.get(key)
+              if not isinstance(value, (int, float)):
+                  raise SystemExit(f"ERRO: total ECMWF inválido em {key}h: {value!r}")
+
+          if data.get("valid_points") != 24:
+              raise SystemExit(f"ERRO: esperado 24 pontos ECMWF; recebido {data.get('valid_points')!r}")
+
+          run_utc = data.get("run_utc") or ""
+          if not data.get("captured_at"):
+              raise SystemExit("ERRO: captured_at ausente.")
+
+          # Novas gravações são feitas pelo script somente com 00Z/12Z.
+          # Um snapshot antigo (por exemplo 06Z) pode permanecer até a primeira
+          # execução bem-sucedida da nova lógica, sem derrubar o workflow.
+          if not (run_utc.endswith("T00:00") or run_utc.endswith("T06:00") or run_utc.endswith("T12:00") or run_utc.endswith("T18:00")):
+              raise SystemExit(f"ERRO: formato de rodada ECMWF inválido: {run_utc!r}")
+
+          print("OK: snapshot ECMWF válido.")
+          print("Rodada:", run_utc)
+          print("Totais:", totals)
+          PY
+
+      - name: Salvar snapshot com sincronização segura
+        run: |
+          set -e
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          BRANCH="${GITHUB_REF_NAME}"
+          git fetch origin "$BRANCH"
+          git rebase --autostash "origin/$BRANCH"
+
+          git add data/ecmwf.json
+
+          if git diff --cached --quiet; then
+            echo "Nenhuma nova rodada ECMWF para publicar."
+            exit 0
+          fi
+
+          git commit -m "Atualiza previsão ECMWF"
+
+          for attempt in 1 2 3; do
+            if git push origin "HEAD:$BRANCH"; then
+              echo "Push realizado com sucesso."
+              exit 0
+            fi
+
+            if [ "$attempt" -eq 3 ]; then
+              echo "ERRO: não foi possível realizar o push após 3 tentativas."
+              exit 1
+            fi
+
+            echo "Push falhou. Sincronizando novamente..."
+            git fetch origin "$BRANCH"
+            git rebase --autostash "origin/$BRANCH"
+          done
