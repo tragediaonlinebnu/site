@@ -32,88 +32,6 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install requests websockets pillow pytesseract
 
-      - name: Instalar OCR
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y tesseract-ocr
-
-      # ==========================================================
-      # MARÉ DE ITAJAÍ
-      # ==========================================================
-      # ATUALMENTE: setembro/2026
-      # No próximo mês, altere somente MARE-9.jpg para MARE-10.jpg.
-      # ==========================================================
-
-      - name: Baixar e atualizar tábua de maré
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          import requests
-
-          url = "https://defesacivil.itajai.sc.gov.br/wp-content/uploads/2026/08/MARE-9.jpg"
-
-          output = Path("data/mare_itajai.jpg")
-          output.parent.mkdir(parents=True, exist_ok=True)
-
-          print(f"Baixando tábua de maré: {url}")
-
-          response = requests.get(
-              url,
-              timeout=30,
-              headers={
-                  "User-Agent": "Mozilla/5.0"
-              }
-          )
-
-          response.raise_for_status()
-
-          if not response.content:
-              raise SystemExit("ERRO: imagem da maré vazia.")
-
-          output.write_bytes(response.content)
-
-          print(f"OK: imagem salva em {output}")
-          print(f"Tamanho: {len(response.content)} bytes")
-          PY
-
-      - name: Executar leitura OCR da maré
-        run: |
-          python scripts/update_tide.py
-
-      - name: Validar maré
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-
-          path = Path("data/mare_itajai.json")
-
-          if not path.exists():
-              raise SystemExit(
-                  "ERRO: data/mare_itajai.json não foi gerado."
-              )
-
-          with path.open("r", encoding="utf-8") as f:
-              data = json.load(f)
-
-          if not isinstance(data, dict):
-              raise SystemExit(
-                  "ERRO: mare_itajai.json não contém um objeto JSON."
-              )
-
-          events = data.get("events")
-
-          if not isinstance(events, list):
-              raise SystemExit(
-                  "ERRO: campo 'events' inválido na maré."
-              )
-
-          print(
-              f"OK: mare_itajai.json válido — "
-              f"{len(events)} eventos encontrados."
-          )
-          PY
-
       # ==========================================================
       # APRENDIZADO DA CALCULADORA
       # ==========================================================
@@ -121,6 +39,10 @@ jobs:
       - name: Executar coleta e aprendizado
         run: |
           python scripts/collect_and_learn.py
+
+      # ==========================================================
+      # VALIDAR ARQUIVOS JSON
+      # ==========================================================
 
       - name: Validar arquivos JSON
         run: |
@@ -137,7 +59,6 @@ jobs:
               "data/rain_response.json",
               "data/flood_events.json",
               "data/projection.json",
-              "data/mare_itajai.json",
           ]
 
           for filename in files:
@@ -153,6 +74,10 @@ jobs:
 
           print("Todos os JSONs são válidos.")
           PY
+
+      # ==========================================================
+      # VALIDAR CHUVA OBSERVADA
+      # ==========================================================
 
       - name: Validar chuva observada
         run: |
@@ -191,9 +116,9 @@ jobs:
               print("OK: nenhum snapshot novo.")
           PY
 
-      - name: Mostrar alterações
-        run: |
-          git status --short
+      # ==========================================================
+      # VALIDAR PROJEÇÃO
+      # ==========================================================
 
       - name: Validar projeção do backend
         run: |
@@ -240,10 +165,10 @@ jobs:
           PY
 
       # ==========================================================
-      # SALVAR TUDO
+      # SALVAR APRENDIZADO
       # ==========================================================
 
-      - name: Salvar aprendizado e maré com sincronização segura
+      - name: Salvar aprendizado com sincronização segura
         run: |
           set -e
 
@@ -263,15 +188,14 @@ jobs:
             data/dam_history.json \
             data/rain_response.json \
             data/flood_events.json \
-            data/projection.json \
-            data/mare_itajai.json
+            data/projection.json
 
           if git diff --cached --quiet; then
             echo "Nenhuma alteração para salvar."
             exit 0
           fi
 
-          git commit -m "Atualiza aprendizado e mare de Itajai"
+          git commit -m "Atualiza aprendizado da calculadora do rio"
 
           for attempt in 1 2 3; do
             if git push origin "HEAD:$BRANCH"; then
@@ -285,6 +209,7 @@ jobs:
             fi
 
             echo "Push falhou. Sincronizando novamente..."
+
             git fetch origin "$BRANCH"
             git rebase --autostash "origin/$BRANCH"
           done
