@@ -1,0 +1,102 @@
+name: Atualizar previsão ECMWF
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Executa 2x por dia, após as duas rodadas principais 00Z e 12Z
+    # (aprox. 01:00 e 13:00 BRT / 04:00 e 16:00 UTC).
+    - cron: "0 4,16 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ecmwf-forecast
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependência
+        run: python -m pip install requests
+
+      - name: Atualizar snapshot ECMWF
+        run: python scripts/update_ecmwf.py
+
+      - name: Validar snapshot ECMWF
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("data/ecmwf.json")
+          if not path.exists():
+              raise SystemExit("ERRO: data/ecmwf.json não existe.")
+
+          data = json.loads(path.read_text(encoding="utf-8"))
+          required = ("6", "12", "24", "48", "72", "192", "360")
+          totals = data.get("totals") or {}
+
+          for key in required:
+              value = totals.get(key)
+              if not isinstance(value, (int, float)):
+                  raise SystemExit(f"ERRO: total ECMWF inválido em {key}h: {value!r}")
+
+          if data.get("valid_points") != 24:
+              raise SystemExit(f"ERRO: esperado 24 pontos ECMWF; recebido {data.get('valid_points')!r}")
+
+          if not data.get("run_utc") or not data.get("captured_at"):
+              raise SystemExit("ERRO: metadados da rodada ECMWF ausentes.")
+
+          print("OK: snapshot ECMWF válido.")
+          print("Rodada:", data["run_utc"])
+          print("Totais:", totals)
+          PY
+
+      - name: Salvar snapshot com sincronização segura
+        run: |
+          set -e
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          BRANCH="${GITHUB_REF_NAME}"
+          git fetch origin "$BRANCH"
+          git rebase --autostash "origin/$BRANCH"
+
+          git add data/ecmwf.json
+
+          if git diff --cached --quiet; then
+            echo "A rodada ECMWF ainda é a mesma. Nenhuma alteração para salvar."
+            exit 0
+          fi
+
+          git commit -m "Atualiza previsão ECMWF"
+
+          for attempt in 1 2 3; do
+            if git push origin "HEAD:$BRANCH"; then
+              echo "Push realizado com sucesso."
+              exit 0
+            fi
+
+            if [ "$attempt" -eq 3 ]; then
+              echo "ERRO: não foi possível realizar o push após 3 tentativas."
+              exit 1
+            fi
+
+            echo "Push falhou. Sincronizando novamente..."
+            git fetch origin "$BRANCH"
+            git rebase --autostash "origin/$BRANCH"
+          done
